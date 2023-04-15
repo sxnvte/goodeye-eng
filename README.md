@@ -1,11 +1,13 @@
 # GoodEye v1.2
-## Autor: Przemyslaw Szmaj
-### Narzedzie automatyzujace hakowanie urządzeń z systemem Android.
+## Author: Przemyslaw Szmaj
+## Translation from Polish to English: sxnvte
+</br>
+### A tool for automating the hacking of Android devices.
 
 
 
-## Uwaga:
-Używanie GoodEye do atakowania celów bez uprzedniej wzajemnej zgody jest nielegalne. Obowiązkiem użytkownika końcowego jest przestrzeganie wszystkich obowiązujących przepisów lokalnych, stanowych i federalnych. Programiści nie ponoszą odpowiedzialności i nie ponoszą odpowiedzialności za jakiekolwiek niewłaściwe użycie lub szkody spowodowane przez ten program.
+## Warning:
+GoodEye is a tool for educational purposes only. Me (sxnvte) and the author of the tool (Przemyslaw Szmaj) are not responsible for any misuse or damage caused by this program. You can be arrested for using this tool without permission. Please use this tool responsibly.
 
 ### Screenshot
 
@@ -13,9 +15,9 @@ Używanie GoodEye do atakowania celów bez uprzedniej wzajemnej zgody jest niele
 
 
 
-##### Jak uzyc:
+##### Usage (engish translation):
 ```
-git clone https://github.com/PSZMAJ/goodeye.git
+git clone https://github.com/sxnvte/goodeye-eng.git
 cd goodeye
 chmod +x goodeye.sh
 ./goodeye
