@@ -2,6 +2,7 @@
 ## Author: Przemyslaw Szmaj
 ## Translation from Polish to English: sxnvte
 </br>
+
 ### A tool for automating the hacking of Android devices.
 
 
